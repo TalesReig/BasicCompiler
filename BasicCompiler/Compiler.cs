@@ -33,19 +33,24 @@ namespace BasicCompiler
                         {
                             state = 1;
                             lexema = lexema + caractere;
+                            break;
+                        }
+                        if (char.IsDigit(caractere))
+                        {
+                            state = 2;
+                            lexema = lexema + caractere;
                         }
                         break;
                     case 1:
                         if (char.IsLetterOrDigit(caractere))
                         {
-                            state = 1;
                             lexema = lexema + caractere;
                         }
                         else
                         {
                             lexemas.Add(lexema);
                             lexema = "";
-                            state = 2;
+                            state = 0;
                         }
                         break;
                 }
