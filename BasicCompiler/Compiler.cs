@@ -20,7 +20,36 @@ namespace BasicCompiler
 
         public void compilerLine(string line)
         {
+            char[] lineChar = line.ToCharArray();
+            string lexema = "";
+            int state = 0;
 
+            foreach(char caractere in lineChar)
+            {
+                switch (state)
+                {
+                    case 0:
+                        if (char.IsLetter(caractere))
+                        {
+                            state = 1;
+                            lexema = lexema + caractere;
+                        }
+                        break;
+                    case 1:
+                        if (char.IsLetterOrDigit(caractere))
+                        {
+                            state = 1;
+                            lexema = lexema + caractere;
+                        }
+                        else
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 2;
+                        }
+                        break;
+                }
+            }
         }
 
         private void preencherPalavrasReservadas()
