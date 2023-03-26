@@ -40,6 +40,15 @@ namespace BasicCompiler
                             state = 2;
                             lexema = lexema + caractere;
                         }
+                        if(caractere == '"')
+                        {
+                            state = 8;
+                        }
+                        if(caractere == '/')
+                        {
+                            state = 10;
+                            lexema = lexema + caractere;
+                        }
                         if (caractere == '+')
                         {
                             lexemas.Add(caractere.ToString());
@@ -112,7 +121,7 @@ namespace BasicCompiler
                         {
                             lexemas.Add(caractere.ToString());
                         }
-                        if(caractere == ']')
+                        if (caractere == ']')
                         {
                             lexemas.Add(caractere.ToString());
                         }
@@ -120,22 +129,12 @@ namespace BasicCompiler
                         {
                             lexemas.Add(caractere.ToString());
                         }
-                        if(caractere == '}')
+                        if (caractere == '}')
                         {
                             lexemas.Add(caractere.ToString());
                         }
                         break;
 
-                        if(caractere == '"')
-                        {
-                            state = 8;
-                        }
-                        break;
-                        if(caractere == '/')
-                        {
-                            state = 10;
-                            lexema = lexema + caractere;
-                        }
                     case 1:
                         if (char.IsLetterOrDigit(caractere))
                         {
@@ -282,11 +281,18 @@ namespace BasicCompiler
                             lexema = "";
                             state = 0;
                         }
+                        else
+                        {
+                            //erro
+                        }
                         break;
                     case 32:
                         if(caractere == '&')
                         {
                             lexema += caractere;
+                        }
+                        else
+                        {
                             //erro
                         }
                         break;
@@ -296,10 +302,6 @@ namespace BasicCompiler
                             lexemas.Add(lexema);
                             lexema = "";
                             state = 0;
-                        }
-                        else
-                        {
-
                         }
                         else
                         {
