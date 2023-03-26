@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace BasicCompiler
         List<string> ListaDeErros = new List<string>();
         List<string> lexemas = new List<string>();
         List<string> tokens = new List<string>();
- 
+        TabelaDeSimbolos tabelaDeSimbolos = new TabelaDeSimbolos();
         public Compiler()
         {
             preencherPalavrasReservadas();
@@ -32,22 +33,22 @@ namespace BasicCompiler
                         if (char.IsLetter(caractere))
                         {
                             state = 1;
-                            lexema = lexema + caractere;
+                            lexema += caractere;
                             break;
                         }
                         if (char.IsDigit(caractere))
                         {
-                            state = 2;
-                            lexema = lexema + caractere;
+                            state = 3;
+                            lexema += caractere;
                         }
-                        if(caractere == '"')
+                        if (caractere == '"')
                         {
                             state = 8;
                         }
                         if(caractere == '/')
                         {
                             state = 10;
-                            lexema = lexema + caractere;
+                            lexema += caractere;
                         }
                         if (caractere == '+')
                         {
@@ -143,6 +144,7 @@ namespace BasicCompiler
                         else
                         {
                             lexemas.Add(lexema);
+                            VerificaEAdicionaToken(lexema);
                             lexema = "";
                             state = 0;
                         }
@@ -309,6 +311,19 @@ namespace BasicCompiler
                         }
                         break;
                 }
+            }
+        }
+
+        private void VerificaEAdicionaToken(string lexema)
+        {
+            if(palavrasReservadas.Exists(x => x == lexema))
+            {
+                tokens.Add(lexema);
+            }
+            else
+            {
+                tabelaDeSimbolos.AdicionarSimbolo(lexema);
+                tokens.Add("ID, " + tabelaDeSimbolos.simbolos.Find(x => x.Nome == lexema).Id);
             }
         }
 

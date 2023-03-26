@@ -8,14 +8,13 @@ public class Program
         try
         {
             Compiler compiladorTabajara = new Compiler();
-            string filePath = "C:\\MeusDocumentos\\arquivo.txt";
+            string filePath = "C:\\TextoTeste\\teste.txt";
             StreamReader sr = new StreamReader(filePath);
             string linha;
 
             while ((linha = sr.ReadLine()) != null)
             {
                 compiladorTabajara.compilerLine(linha);
-                Console.WriteLine(linha);
             }
             sr.Close();
         }
