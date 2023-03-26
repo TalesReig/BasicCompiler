@@ -42,26 +42,31 @@ namespace BasicCompiler
                         {
                             state = 3;
                             lexema += caractere;
+                            break;
                         }
                         if (caractere == '"')
                         {
                             lexema = lexema + caractere;
                             state = 8;
+                            break;
                         }
                         if(caractere == '/')
                         {
                             state = 10;
                             lexema += caractere;
+                            break;
                         }
                         if (caractere == '+')
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == '-')
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == '*')
                         {
@@ -72,6 +77,7 @@ namespace BasicCompiler
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == '=')
                         {
@@ -113,41 +119,49 @@ namespace BasicCompiler
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == ';')
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == '(')
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == ')')
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == '[')
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == ']')
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == '{')
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == '}')
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         #endregion
                         break;
@@ -172,11 +186,16 @@ namespace BasicCompiler
                         }
                         if(caractere == '.')
                         {
+                            lexema = lexema + caractere;
                             state = 5;
+                            break;
                         }
                         if (!char.IsLetterOrDigit(caractere))
                         {
-                            adicionandoLexemaToken(lexema);
+                            lexemas.Add(lexema);
+                            tokens.Add("NUMINT, " + lexema);
+                            lexema = "";
+                            state = 0;
                         }
                         break;
                     case 5:
@@ -186,14 +205,20 @@ namespace BasicCompiler
                         }
                         if (!char.IsLetterOrDigit(caractere))
                         {
-                            adicionandoLexemaToken(lexema);
+                            lexemas.Add(lexema);
+                            tokens.Add("NUMDEC, " + lexema);
+                            lexema = "";
+                            state = 0;
                         }
                         break;
                     case 8:
                         if(caractere == '"')
                         {
                             lexema = lexema + caractere;
-                            adicionandoLexemaToken(lexema);
+                            lexemas.Add(lexema);
+                            tokens.Add("TEXTO, " + lexema);
+                            lexema = "";
+                            state = 0;
                         }
                         if(caractere == '\n')
                         {
@@ -293,7 +318,10 @@ namespace BasicCompiler
                     case 11:
                         if (caractere == '\n')
                         {
-                            adicionandoLexemaToken(lexema);
+                            lexemas.Add(lexema);
+                            tokens.Add("COMMENT, " + lexema);
+                            lexema = "";
+                            state = 0;
                         }
                         else
                         {
@@ -301,6 +329,11 @@ namespace BasicCompiler
                         }
                         break;
                 }
+            }
+
+            foreach (var item in tokens)
+            {
+                Console.WriteLine(item);
             }
         }
 
