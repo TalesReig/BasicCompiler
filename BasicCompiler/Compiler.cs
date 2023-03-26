@@ -320,6 +320,7 @@ namespace BasicCompiler
         private void adicionandoLexemaToken(string lexemaParametro)
         {
             lexemas.Add(lexema);
+            tokens.Add(lexema);
             lexema = "";
             state = 0;
         }
