@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace BasicCompiler
         List<string> ListaDeErros = new List<string>();
         List<string> lexemas = new List<string>();
         List<string> tokens = new List<string>();
+        TabelaDeSimbolos tabelaDeSimbolos = new TabelaDeSimbolos();
         private string lexema = "";
         private int state = 0;
 
@@ -33,15 +35,15 @@ namespace BasicCompiler
                         if (char.IsLetter(caractere))
                         {
                             state = 1;
-                            lexema = lexema + caractere;
+                            lexema += caractere;
                             break;
                         }
                         if (char.IsDigit(caractere))
                         {
                             state = 3;
-                            lexema = lexema + caractere;
+                            lexema += caractere;
                         }
-                        if(caractere == '"')
+                        if (caractere == '"')
                         {
                             lexema = lexema + caractere;
                             state = 8;
@@ -49,7 +51,7 @@ namespace BasicCompiler
                         if(caractere == '/')
                         {
                             state = 10;
-                            lexema = lexema + caractere;
+                            lexema += caractere;
                         }
                         if (caractere == '+')
                         {
@@ -157,7 +159,10 @@ namespace BasicCompiler
                         }
                         else
                         {
-                            adicionandoLexemaToken(lexema);
+                            lexemas.Add(lexema);
+                            VerificaEAdicionaToken(lexema);
+                            lexema = "";
+                            state = 0;
                         }
                         break;
                     case 3:
@@ -299,11 +304,16 @@ namespace BasicCompiler
             }
         }
 
-        public void mostrarLexemas()
+        private void VerificaEAdicionaToken(string lexema)
         {
-            foreach(string l in lexemas)
+            if(palavrasReservadas.Exists(x => x == lexema))
             {
-                Console.WriteLine(l);
+                tokens.Add(lexema);
+            }
+            else
+            {
+                tabelaDeSimbolos.AdicionarSimbolo(lexema);
+                tokens.Add("ID, " + tabelaDeSimbolos.simbolos.Find(x => x.Nome == lexema).Id);
             }
         }
 
