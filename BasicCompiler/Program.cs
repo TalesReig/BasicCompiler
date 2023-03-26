@@ -16,7 +16,8 @@ public class Program
             {
                 compiladorTabajara.compilerLine(linha);
             }
-            sr.Close();
+
+            compiladorTabajara.mostrarLexemas();
         }
         catch (Exception ex)
         {

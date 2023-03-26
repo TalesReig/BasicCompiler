@@ -14,6 +14,9 @@ namespace BasicCompiler
         List<string> lexemas = new List<string>();
         List<string> tokens = new List<string>();
         TabelaDeSimbolos tabelaDeSimbolos = new TabelaDeSimbolos();
+        private string lexema = "";
+        private int state = 0;
+
         public Compiler()
         {
             preencherPalavrasReservadas();
@@ -22,14 +25,13 @@ namespace BasicCompiler
         public void compilerLine(string line)
         {
             char[] lineChar = line.ToCharArray();
-            string lexema = "";
-            int state = 0;
 
             foreach(char caractere in lineChar)
             {
                 switch (state)
                 {
                     case 0:
+                        #region
                         if (char.IsLetter(caractere))
                         {
                             state = 1;
@@ -43,6 +45,7 @@ namespace BasicCompiler
                         }
                         if (caractere == '"')
                         {
+                            lexema = lexema + caractere;
                             state = 8;
                         }
                         if(caractere == '/')
@@ -53,18 +56,22 @@ namespace BasicCompiler
                         if (caractere == '+')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == '-')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == '*')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == '%')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == '=')
                         {
@@ -105,35 +112,44 @@ namespace BasicCompiler
                         if (caractere == ',')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == ';')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == '(')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == ')')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == '[')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == ']')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == '{')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
                         if (caractere == '}')
                         {
                             lexemas.Add(caractere.ToString());
+                            tokens.Add(caractere.ToString());
                         }
+                        #endregion
                         break;
 
                     case 1:
@@ -160,9 +176,7 @@ namespace BasicCompiler
                         }
                         if (!char.IsLetterOrDigit(caractere))
                         {
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                         }
                         break;
                     case 5:
@@ -172,17 +186,14 @@ namespace BasicCompiler
                         }
                         if (!char.IsLetterOrDigit(caractere))
                         {
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                         }
                         break;
                     case 8:
                         if(caractere == '"')
                         {
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            lexema = lexema + caractere;
+                            adicionandoLexemaToken(lexema);
                         }
                         if(caractere == '\n')
                         {
@@ -201,9 +212,7 @@ namespace BasicCompiler
                         }
                         else
                         {
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                         }
                         break;
 
@@ -211,15 +220,11 @@ namespace BasicCompiler
                         if (caractere == '=')
                         {
                             lexema += caractere;
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                         }
                         else
                         {
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                             goto case 0;
                         }
                         break;
@@ -228,15 +233,11 @@ namespace BasicCompiler
                         if (caractere == '=')
                         {
                             lexema += caractere;
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                         }
                         else
                         {
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                             goto case 0;
                         }
                         break;
@@ -245,15 +246,11 @@ namespace BasicCompiler
                         if (caractere == '=')
                         {
                             lexema += caractere;
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                         }
                         else
                         {
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                             goto case 0;
                         }
                         break;
@@ -262,26 +259,20 @@ namespace BasicCompiler
                         if(caractere == '=')
                         {
                             lexema += caractere;
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                         }
                         else
                         {
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                             goto case 0;
                         }
-
                         break;
+
                     case 30:
                         if(caractere == '|')
                         {
                             lexema += caractere;
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                         }
                         else
                         {
@@ -292,6 +283,7 @@ namespace BasicCompiler
                         if(caractere == '&')
                         {
                             lexema += caractere;
+                            adicionandoLexemaToken(lexema);
                         }
                         else
                         {
@@ -301,9 +293,7 @@ namespace BasicCompiler
                     case 11:
                         if (caractere == '\n')
                         {
-                            lexemas.Add(lexema);
-                            lexema = "";
-                            state = 0;
+                            adicionandoLexemaToken(lexema);
                         }
                         else
                         {
@@ -327,6 +317,13 @@ namespace BasicCompiler
             }
         }
 
+        private void adicionandoLexemaToken(string lexemaParametro)
+        {
+            lexemas.Add(lexema);
+            tokens.Add(lexema);
+            lexema = "";
+            state = 0;
+        }
         private void preencherPalavrasReservadas()
         {
             palavrasReservadas.Add("public");
