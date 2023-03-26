@@ -15,7 +15,7 @@ namespace BasicCompiler
             var simbolo = new Simbolo()
             {
                 Id = simbolos.Count() + 1,
-                Nome = lexema
+                Variavel = lexema
             };
             
             simbolos.Add(simbolo);

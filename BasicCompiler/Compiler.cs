@@ -331,9 +331,22 @@ namespace BasicCompiler
                 }
             }
 
+            Console.WriteLine("LEXEMAS");
+            foreach (var item in lexemas)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine();
+            Console.WriteLine("TOKENS");
             foreach (var item in tokens)
             {
                 Console.WriteLine(item);
+            }
+            Console.WriteLine();
+            Console.WriteLine("TABELA SIMBOLOS");
+            foreach (var item in tabelaDeSimbolos.simbolos)
+            {
+                Console.WriteLine(item.Id + " - " + item.Variavel);
             }
         }
 
@@ -346,7 +359,7 @@ namespace BasicCompiler
             else
             {
                 tabelaDeSimbolos.AdicionarSimbolo(lexema);
-                tokens.Add("ID, " + tabelaDeSimbolos.simbolos.Find(x => x.Nome == lexema).Id);
+                tokens.Add("ID, " + tabelaDeSimbolos.simbolos.Find(x => x.Variavel == lexema).Id);
             }
         }
 

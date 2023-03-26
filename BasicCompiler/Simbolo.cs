@@ -9,6 +9,6 @@ namespace BasicCompiler
     public class Simbolo
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
+        public string Variavel { get; set; }
     }
 }
