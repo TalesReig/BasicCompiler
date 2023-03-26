@@ -15,9 +15,9 @@ public class Program
             while ((linha = sr.ReadLine()) != null)
             {
                 compiladorTabajara.compilerLine(linha);
-                Console.WriteLine(linha);
             }
-            sr.Close();
+
+            compiladorTabajara.mostrarLexemas();
         }
         catch (Exception ex)
         {
