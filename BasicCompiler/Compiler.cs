@@ -40,6 +40,15 @@ namespace BasicCompiler
                             state = 2;
                             lexema = lexema + caractere;
                         }
+                        if(caractere == '"')
+                        {
+                            state = 8;
+                        }
+                        if(caractere == '/')
+                        {
+                            state = 10;
+                            lexema = lexema + caractere;
+                        }
                         if (caractere == '+')
                         {
                             lexemas.Add(caractere.ToString());
@@ -112,7 +121,7 @@ namespace BasicCompiler
                         {
                             lexemas.Add(caractere.ToString());
                         }
-                        if(caractere == ']')
+                        if (caractere == ']')
                         {
                             lexemas.Add(caractere.ToString());
                         }
@@ -120,7 +129,7 @@ namespace BasicCompiler
                         {
                             lexemas.Add(caractere.ToString());
                         }
-                        if(caractere == '}')
+                        if (caractere == '}')
                         {
                             lexemas.Add(caractere.ToString());
                         }
@@ -129,6 +138,63 @@ namespace BasicCompiler
                     case 1:
                         if (char.IsLetterOrDigit(caractere))
                         {
+                            lexema = lexema + caractere;
+                        }
+                        else
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        break;
+                    case 3:
+                        if (char.IsDigit(caractere))
+                        {
+                            lexema = lexema + caractere;
+                        }
+                        if(caractere == '.')
+                        {
+                            state = 5;
+                        }
+                        if (!char.IsLetterOrDigit(caractere))
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        break;
+                    case 5:
+                        if (char.IsDigit(caractere))
+                        {
+                            lexema = lexema + caractere;
+                        }
+                        if (!char.IsLetterOrDigit(caractere))
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        break;
+                    case 8:
+                        if(caractere == '"')
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        if(caractere == '\n')
+                        {
+                            //erro
+                        }
+                        if(caractere != '"' && caractere != '\n')
+                        {
+                            lexema = lexema + caractere;
+                        }
+                        break;
+                    case 10:
+                        if(caractere == '/')
+                        {
+                            state = 11;
                             lexema = lexema + caractere;
                         }
                         else
@@ -215,18 +281,31 @@ namespace BasicCompiler
                             lexema = "";
                             state = 0;
                         }
+                        else
+                        {
+                            //erro
+                        }
                         break;
                     case 32:
                         if(caractere == '&')
                         {
                             lexema += caractere;
+                        }
+                        else
+                        {
+                            //erro
+                        }
+                        break;
+                    case 11:
+                        if (caractere == '\n')
+                        {
                             lexemas.Add(lexema);
                             lexema = "";
                             state = 0;
                         }
                         else
                         {
-
+                            lexema = lexema + caractere;
                         }
                         break;
                 }
