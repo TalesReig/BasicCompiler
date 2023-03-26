@@ -40,7 +40,16 @@ namespace BasicCompiler
                             state = 2;
                             lexema = lexema + caractere;
                         }
+                        if(caractere == '"')
+                        {
+                            state = 8;
+                        }
                         break;
+                        if(caractere == '/')
+                        {
+                            state = 10;
+                            lexema = lexema + caractere;
+                        }
                     case 1:
                         if (char.IsLetterOrDigit(caractere))
                         {
@@ -51,6 +60,73 @@ namespace BasicCompiler
                             lexemas.Add(lexema);
                             lexema = "";
                             state = 0;
+                        }
+                        break;
+                    case 3:
+                        if (char.IsDigit(caractere))
+                        {
+                            lexema = lexema + caractere;
+                        }
+                        if(caractere == '.')
+                        {
+                            state = 5;
+                        }
+                        if (!char.IsLetterOrDigit(caractere))
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        break;
+                    case 5:
+                        if (char.IsDigit(caractere))
+                        {
+                            lexema = lexema + caractere;
+                        }
+                        if (!char.IsLetterOrDigit(caractere))
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        break;
+                    case 8:
+                        if(caractere == '"')
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        if(caractere == '\n')
+                        {
+                            //erro
+                        }
+                        if(caractere != '"' && caractere != '\n')
+                        {
+                            lexema = lexema + caractere;
+                        }
+                        break;
+                    case 10:
+                        if(caractere == '/')
+                        {
+                            state = 11;
+                            lexema = lexema + caractere;
+                        }
+                        else
+                        {
+                            //erro
+                        }
+                        break;
+                    case 11:
+                        if (caractere == '\n')
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        else
+                        {
+                            lexema = lexema + caractere;
                         }
                         break;
                 }
