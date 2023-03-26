@@ -40,6 +40,92 @@ namespace BasicCompiler
                             state = 2;
                             lexema = lexema + caractere;
                         }
+                        if (caractere == '+')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if (caractere == '-')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if (caractere == '*')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if (caractere == '%')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if (caractere == '=')
+                        {
+                            state = 18;
+                            lexema += caractere;
+                            break;
+                        }
+                        if (caractere == '!')
+                        {
+                            state = 21;
+                            lexema += caractere;
+                            break;
+                        }
+                        if (caractere == '>')
+                        {
+                            state = 24;
+                            lexema += caractere;
+                            break;
+                        }
+                        if (caractere == '<')
+                        {
+                            state = 27;
+                            lexema += caractere;
+                            break;
+                        }
+                        if (caractere == '|')
+                        {
+                            state = 30;
+                            lexema += caractere;
+                            break;
+                        }
+                        if (caractere == '&')
+                        {
+                            state = 32;
+                            lexema += caractere;
+                            break;
+                        }
+                        if (caractere == ',')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if (caractere == ';')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if (caractere == '(')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if (caractere == ')')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if (caractere == '[')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if(caractere == ']')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if (caractere == '{')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        if(caractere == '}')
+                        {
+                            lexemas.Add(caractere.ToString());
+                        }
+                        break;
+
                         if(caractere == '"')
                         {
                             state = 8;
@@ -114,6 +200,93 @@ namespace BasicCompiler
                         }
                         else
                         {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        break;
+
+                    case 18:
+                        if (caractere == '=')
+                        {
+                            lexema += caractere;
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        else
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                            goto case 0;
+                        }
+                        break;
+
+                    case 21:
+                        if (caractere == '=')
+                        {
+                            lexema += caractere;
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        else
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                            goto case 0;
+                        }
+                        break;
+
+                    case 24:
+                        if (caractere == '=')
+                        {
+                            lexema += caractere;
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        else
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                            goto case 0;
+                        }
+                        break;
+
+                    case 27:
+                        if(caractere == '=')
+                        {
+                            lexema += caractere;
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        else
+                        {
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                            goto case 0;
+                        }
+
+                        break;
+                    case 30:
+                        if(caractere == '|')
+                        {
+                            lexema += caractere;
+                            lexemas.Add(lexema);
+                            lexema = "";
+                            state = 0;
+                        }
+                        break;
+                    case 32:
+                        if(caractere == '&')
+                        {
+                            lexema += caractere;
                             //erro
                         }
                         break;
@@ -123,6 +296,10 @@ namespace BasicCompiler
                             lexemas.Add(lexema);
                             lexema = "";
                             state = 0;
+                        }
+                        else
+                        {
+
                         }
                         else
                         {
