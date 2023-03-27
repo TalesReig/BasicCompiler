@@ -171,7 +171,7 @@ namespace BasicCompiler
 
                         if(caractere != ' ')
                         {
-                            ListaDeErros.Add($"Caractere desconhecido na linha{numeroLinha}");
+                            ListaDeErros.Add($"Caractere desconhecido na linha:  {numeroLinha}");
                         }
                         #endregion
                         break;
