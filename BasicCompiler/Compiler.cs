@@ -376,7 +376,11 @@ namespace BasicCompiler
             }
             else
             {
-                tabelaDeSimbolos.AdicionarSimbolo(lexema);
+                if(!tabelaDeSimbolos.simbolos.Any(x => x.Variavel == lexema))
+                {
+                    tabelaDeSimbolos.AdicionarSimbolo(lexema);
+                    tokens.Add("ID, " + tabelaDeSimbolos.simbolos.Find(x => x.Variavel == lexema).Id);
+                }
                 tokens.Add("ID, " + tabelaDeSimbolos.simbolos.Find(x => x.Variavel == lexema).Id);
             }
         }
