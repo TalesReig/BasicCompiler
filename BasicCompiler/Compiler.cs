@@ -275,6 +275,7 @@ namespace BasicCompiler
                         if(caractere == '\n' || lineChar.IndexOf(caractere) == lineChar.Count - 1)
                         {
                             ListaDeErros.Add($"Uso de aspas incorreto na linha: {numeroLinha}");
+                            lexema = "";
                             state=0;
                         }
                         if(caractere != '"' && caractere != '\n')
