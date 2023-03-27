@@ -276,7 +276,8 @@ namespace BasicCompiler
                         {
                             ListaDeErros.Add($"Uso de aspas incorreto na linha: {numeroLinha}");
                             lexema = "";
-                            state=0;
+                            state = 0;
+                            break;
                         }
                         if(caractere != '"' && caractere != '\n')
                         {
