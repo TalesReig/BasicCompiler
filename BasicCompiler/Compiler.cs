@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+
 
 namespace BasicCompiler
 {
@@ -33,7 +35,8 @@ namespace BasicCompiler
                 {
                     case 0:
                         #region
-                        if (char.IsLetter(caractere))
+                        Regex regexLetras = new Regex(@"^[a-zA-Z]+$");
+                        if (regexLetras.IsMatch(caractere.ToString()))
                         {
                             state = 1;
                             lexema += caractere;
@@ -73,6 +76,7 @@ namespace BasicCompiler
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == '%')
                         {
@@ -164,18 +168,27 @@ namespace BasicCompiler
                             tokens.Add(caractere.ToString());
                             break;
                         }
-                        else 
+
+                        if(caractere != ' ')
                         {
-                            if(caractere != ' '  && caractere != '\n')
-                                ListaDeErros.Add($"Caracter desconhecido na linha :{numeroLinha}");
+                            ListaDeErros.Add($"Caractere desconhecido na linha{numeroLinha}");
                         }
                         #endregion
                         break;
 
                     case 1:
+                        Regex regexLetrasENumeros = new Regex(@"^[a-zA-Z0-9]+$");
                         if (char.IsLetterOrDigit(caractere))
                         {
-                            lexema = lexema + caractere;
+                            if (regexLetrasENumeros.IsMatch(caractere.ToString()))
+                            {
+                                lexema = lexema + caractere;
+                            }
+                            else
+                            {
+                                ListaDeErros.Add($"Caractere desconhecido em nome de variavel na linha: {numeroLinha}");
+                                state = 2;
+                            }
                         }
                         else
                         {
@@ -185,11 +198,21 @@ namespace BasicCompiler
                             state = 0;
                             goto case 0;
                         }
+                        
+                        break;
+                    case 2:
+                        if (!char.IsLetterOrDigit(caractere))
+                        {
+                            lexema = "";
+                            state = 0;
+                            goto case 0;
+                        }
                         break;
                     case 3:
                         if (char.IsLetter(caractere))
                         {
                             ListaDeErros.Add($"Variável começando com número na linha: {numeroLinha}");
+                            state = 2;
                         }
                         if (char.IsDigit(caractere))
                         {
@@ -219,6 +242,9 @@ namespace BasicCompiler
                         else
                         {
                             ListaDeErros.Add($"Um decimal sem digito após . na linha: {numeroLinha}");
+                            state = 0;
+                            lexema = "";
+                            goto case 0;
                         }
                         break;
                     case 6:
@@ -249,6 +275,7 @@ namespace BasicCompiler
                         if(caractere == '\n' || lineChar.IndexOf(caractere) == lineChar.Count - 1)
                         {
                             ListaDeErros.Add($"Uso de aspas incorreto na linha: {numeroLinha}");
+                            state=0;
                         }
                         if(caractere != '"' && caractere != '\n')
                         {
@@ -378,10 +405,12 @@ namespace BasicCompiler
             if(ListaDeErros.Count > 0)
             {
                 Console.WriteLine("\nLISTA DE ERROS");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 foreach (var item in ListaDeErros)
                 {
                     Console.WriteLine(item);
                 }
+                Console.ResetColor();
             }
         }
 
