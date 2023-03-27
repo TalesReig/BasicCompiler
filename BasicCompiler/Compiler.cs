@@ -209,6 +209,11 @@ namespace BasicCompiler
                         }
                         break;
                     case 3:
+                        if (char.IsLetter(caractere))
+                        {
+                            ListaDeErros.Add($"Variável começando com número na linha: {numeroLinha}");
+                            state = 2;
+                        }
                         if (char.IsDigit(caractere))
                         {
                             lexema = lexema + caractere;
@@ -236,7 +241,10 @@ namespace BasicCompiler
                         }
                         else
                         {
-                            ListaDeErros.Add($"Um decimal sem digito após . na linha:{numeroLinha}");
+                            ListaDeErros.Add($"Um decimal sem digito após . na linha: {numeroLinha}");
+                            state = 0;
+                            lexema = "";
+                            goto case 0;
                         }
                         break;
                     case 6:
@@ -254,17 +262,20 @@ namespace BasicCompiler
                         }
                         break;
                     case 8:
-                        if(caractere == '"')
+
+                        if (caractere == '"')
                         {
                             lexema = lexema + caractere;
                             lexemas.Add(lexema);
                             tokens.Add("TEXTO, " + lexema);
                             lexema = "";
                             state = 0;
+                            break;
                         }
-                        if(caractere == '\n')
+                        if(caractere == '\n' || lineChar.IndexOf(caractere) == lineChar.Count - 1)
                         {
-                            ListaDeErros.Add($"Uso de aspas incorreto na linha :{numeroLinha}");
+                            ListaDeErros.Add($"Uso de aspas incorreto na linha: {numeroLinha}");
+                            state=0;
                         }
                         if(caractere != '"' && caractere != '\n')
                         {
@@ -343,7 +354,7 @@ namespace BasicCompiler
                         }
                         else
                         {
-                            ListaDeErros.Add($"Operador | utilizado de maneira incorreta na linha:{numeroLinha}");
+                            ListaDeErros.Add($"Operador | utilizado de maneira incorreta na linha: {numeroLinha}");
                         }
                         break;
                     case 32:
@@ -354,7 +365,7 @@ namespace BasicCompiler
                         }
                         else
                         {
-                            ListaDeErros.Add($"Operador & utilizado de maneira incorreta na linha:{numeroLinha}");
+                            ListaDeErros.Add($"Operador & utilizado de maneira incorreta na linha: {numeroLinha}");
                         }
                         break;
                     case 11:
@@ -394,10 +405,12 @@ namespace BasicCompiler
             if(ListaDeErros.Count > 0)
             {
                 Console.WriteLine("\nLISTA DE ERROS");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 foreach (var item in ListaDeErros)
                 {
                     Console.WriteLine(item);
                 }
+                Console.ResetColor();
             }
         }
 
@@ -412,7 +425,6 @@ namespace BasicCompiler
                 if(!tabelaDeSimbolos.simbolos.Any(x => x.Variavel == lexema))
                 {
                     tabelaDeSimbolos.AdicionarSimbolo(lexema);
-                    tokens.Add("ID, " + tabelaDeSimbolos.simbolos.Find(x => x.Variavel == lexema).Id);
                 }
                 tokens.Add("ID, " + tabelaDeSimbolos.simbolos.Find(x => x.Variavel == lexema).Id);
             }
