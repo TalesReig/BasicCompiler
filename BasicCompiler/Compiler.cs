@@ -22,9 +22,10 @@ namespace BasicCompiler
             preencherPalavrasReservadas();
         }
 
-        public void compilerLine(string line)
+        public void compilerLine(string line, int numeroLinha)
         {
-            char[] lineChar = line.ToCharArray();
+            List<char> lineChar = line.ToList<char>();
+            lineChar.Add(' ');
 
             foreach(char caractere in lineChar)
             {
@@ -177,6 +178,7 @@ namespace BasicCompiler
                             VerificaEAdicionaToken(lexema);
                             lexema = "";
                             state = 0;
+                            goto case 0;
                         }
                         break;
                     case 3:
@@ -196,9 +198,21 @@ namespace BasicCompiler
                             tokens.Add("NUMINT, " + lexema);
                             lexema = "";
                             state = 0;
+                            goto case 0;
                         }
                         break;
                     case 5:
+                        if (char.IsDigit(caractere))
+                        {
+                            lexema = lexema + caractere;
+                            state = 6;
+                        }
+                        else
+                        {
+                            ListaDeErros.Add($"Um decimal sem digito após . na linha:{numeroLinha}");
+                        }
+                        break;
+                    case 6:
                         if (char.IsDigit(caractere))
                         {
                             lexema = lexema + caractere;
@@ -209,6 +223,7 @@ namespace BasicCompiler
                             tokens.Add("NUMDEC, " + lexema);
                             lexema = "";
                             state = 0;
+                            goto case 0;
                         }
                         break;
                     case 8:
@@ -222,7 +237,7 @@ namespace BasicCompiler
                         }
                         if(caractere == '\n')
                         {
-                            //erro
+                            ListaDeErros.Add($"Uso de aspas incorreto na linha :{numeroLinha}");
                         }
                         if(caractere != '"' && caractere != '\n')
                         {
@@ -301,7 +316,7 @@ namespace BasicCompiler
                         }
                         else
                         {
-                            //erro
+                            ListaDeErros.Add($"Operador | utilizado de maneira incorreta na linha:{numeroLinha}");
                         }
                         break;
                     case 32:
@@ -312,7 +327,7 @@ namespace BasicCompiler
                         }
                         else
                         {
-                            //erro
+                            ListaDeErros.Add($"Operador & utilizado de maneira incorreta na linha:{numeroLinha}");
                         }
                         break;
                     case 11:
@@ -330,7 +345,10 @@ namespace BasicCompiler
                         break;
                 }
             }
+        }
 
+        public void mostrarResultado()
+        {
             Console.WriteLine("LEXEMAS");
             foreach (var item in lexemas)
             {

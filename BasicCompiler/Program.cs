@@ -5,18 +5,22 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        string linha;
+        int contLinha = 0;
+        string filePath = "C:\\MeusDocumentos\\arquivo.txt";
+
         try
         {
             Compiler compiladorTabajara = new Compiler();
-            string filePath = "C:\\TextoTeste\\teste.txt";
             StreamReader sr = new StreamReader(filePath);
-            string linha;
 
             while ((linha = sr.ReadLine()) != null)
             {
-                compiladorTabajara.compilerLine(linha);
+                contLinha++;
+                compiladorTabajara.compilerLine(linha, contLinha);
             }
 
+            compiladorTabajara.mostrarResultado();
         }
         catch (Exception ex)
         {
