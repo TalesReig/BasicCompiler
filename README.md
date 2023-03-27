@@ -16,3 +16,9 @@
 - Erros a serem identificados pelo analisador: aspas não fechadas, variáveis iniciando com números, números com ponto e sem as casas decimais e caracteres desconhecidos. O analisador não deve parar no primeiro erro, deve analisar todo o código e mostrar todos os erros identificados no final.
 
 - Caso o usuário queira utilizar e testar, ele deve criar o arquivo seguindo o diretório que está na program pois isso ainda não foi automatizado para o usuários escolher o diretório.
+
+## Referencias
+
+- O código foi implementado com base neste automáto 
+
+![Captura de tela 2023-03-27 105100](https://user-images.githubusercontent.com/90864593/227964243-7e76071f-2849-410d-a799-c46f51e131ef.png)
