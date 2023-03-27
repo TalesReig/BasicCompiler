@@ -19,6 +19,6 @@
 
 ## Referencias
 
-- O código foi implementado com base neste automáto 
+- O código foi implementado com base neste autômato finito determinístico.
 
 ![Captura de tela 2023-03-27 105100](https://user-images.githubusercontent.com/90864593/227964243-7e76071f-2849-410d-a799-c46f51e131ef.png)
