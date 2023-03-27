@@ -354,17 +354,23 @@ namespace BasicCompiler
             {
                 Console.WriteLine(item);
             }
-            Console.WriteLine();
-            Console.WriteLine("TOKENS");
+            Console.WriteLine("\nTOKENS");
             foreach (var item in tokens)
             {
                 Console.WriteLine(item);
             }
-            Console.WriteLine();
-            Console.WriteLine("TABELA SIMBOLOS");
+            Console.WriteLine("\nTABELA SIMBOLOS");
             foreach (var item in tabelaDeSimbolos.simbolos)
             {
                 Console.WriteLine(item.Id + " - " + item.Variavel);
+            }
+            if(ListaDeErros.Count > 0)
+            {
+                Console.WriteLine("\nLISTA DE ERROS");
+                foreach (var item in ListaDeErros)
+                {
+                    Console.WriteLine(item);
+                }
             }
         }
 
