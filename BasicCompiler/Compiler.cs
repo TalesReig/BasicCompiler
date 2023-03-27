@@ -164,6 +164,11 @@ namespace BasicCompiler
                             tokens.Add(caractere.ToString());
                             break;
                         }
+                        else 
+                        {
+                            if(caractere != ' '  && caractere != '\n')
+                                ListaDeErros.Add($"Caracter desconhecido na linha :{numeroLinha}");
+                        }
                         #endregion
                         break;
 
@@ -182,6 +187,10 @@ namespace BasicCompiler
                         }
                         break;
                     case 3:
+                        if (char.IsLetter(caractere))
+                        {
+                            ListaDeErros.Add($"Variável começando com número na linha: {numeroLinha}");
+                        }
                         if (char.IsDigit(caractere))
                         {
                             lexema = lexema + caractere;
@@ -209,7 +218,7 @@ namespace BasicCompiler
                         }
                         else
                         {
-                            ListaDeErros.Add($"Um decimal sem digito após . na linha:{numeroLinha}");
+                            ListaDeErros.Add($"Um decimal sem digito após . na linha: {numeroLinha}");
                         }
                         break;
                     case 6:
@@ -227,17 +236,19 @@ namespace BasicCompiler
                         }
                         break;
                     case 8:
-                        if(caractere == '"')
+
+                        if (caractere == '"')
                         {
                             lexema = lexema + caractere;
                             lexemas.Add(lexema);
                             tokens.Add("TEXTO, " + lexema);
                             lexema = "";
                             state = 0;
+                            break;
                         }
-                        if(caractere == '\n')
+                        if(caractere == '\n' || lineChar.IndexOf(caractere) == lineChar.Count - 1)
                         {
-                            ListaDeErros.Add($"Uso de aspas incorreto na linha :{numeroLinha}");
+                            ListaDeErros.Add($"Uso de aspas incorreto na linha: {numeroLinha}");
                         }
                         if(caractere != '"' && caractere != '\n')
                         {
@@ -316,7 +327,7 @@ namespace BasicCompiler
                         }
                         else
                         {
-                            ListaDeErros.Add($"Operador | utilizado de maneira incorreta na linha:{numeroLinha}");
+                            ListaDeErros.Add($"Operador | utilizado de maneira incorreta na linha: {numeroLinha}");
                         }
                         break;
                     case 32:
@@ -327,7 +338,7 @@ namespace BasicCompiler
                         }
                         else
                         {
-                            ListaDeErros.Add($"Operador & utilizado de maneira incorreta na linha:{numeroLinha}");
+                            ListaDeErros.Add($"Operador & utilizado de maneira incorreta na linha: {numeroLinha}");
                         }
                         break;
                     case 11:
@@ -385,7 +396,6 @@ namespace BasicCompiler
                 if(!tabelaDeSimbolos.simbolos.Any(x => x.Variavel == lexema))
                 {
                     tabelaDeSimbolos.AdicionarSimbolo(lexema);
-                    tokens.Add("ID, " + tabelaDeSimbolos.simbolos.Find(x => x.Variavel == lexema).Id);
                 }
                 tokens.Add("ID, " + tabelaDeSimbolos.simbolos.Find(x => x.Variavel == lexema).Id);
             }
