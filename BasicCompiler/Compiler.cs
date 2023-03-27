@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+
 
 namespace BasicCompiler
 {
@@ -33,7 +35,8 @@ namespace BasicCompiler
                 {
                     case 0:
                         #region
-                        if (char.IsLetter(caractere))
+                        Regex regexLetras = new Regex(@"^[a-zA-Z]+$");
+                        if (regexLetras.IsMatch(caractere.ToString()))
                         {
                             state = 1;
                             lexema += caractere;
@@ -73,6 +76,7 @@ namespace BasicCompiler
                         {
                             lexemas.Add(caractere.ToString());
                             tokens.Add(caractere.ToString());
+                            break;
                         }
                         if (caractere == '%')
                         {
@@ -164,18 +168,41 @@ namespace BasicCompiler
                             tokens.Add(caractere.ToString());
                             break;
                         }
+
+                        if(caractere != ' ')
+                        {
+                            ListaDeErros.Add($"Caractere desconhecido na linha{numeroLinha}");
+                        }
                         #endregion
                         break;
 
                     case 1:
+                        Regex regexLetrasENumeros = new Regex(@"^[a-zA-Z0-9]+$");
                         if (char.IsLetterOrDigit(caractere))
                         {
-                            lexema = lexema + caractere;
+                            if (regexLetrasENumeros.IsMatch(caractere.ToString()))
+                            {
+                                lexema = lexema + caractere;
+                            }
+                            else
+                            {
+                                ListaDeErros.Add($"Caractere desconhecido em nome de variavel na linha: {numeroLinha}");
+                                state = 2;
+                            }
                         }
                         else
                         {
                             lexemas.Add(lexema);
                             VerificaEAdicionaToken(lexema);
+                            lexema = "";
+                            state = 0;
+                            goto case 0;
+                        }
+                        
+                        break;
+                    case 2:
+                        if (!char.IsLetterOrDigit(caractere))
+                        {
                             lexema = "";
                             state = 0;
                             goto case 0;
